@@ -1,81 +1,54 @@
-# SaaS de gestion logistique et douanière
+# TransitFlow SN
 
-Plateforme SaaS B2B destinée aux transitaires et aux PME importatrices afin de centraliser le suivi des expéditions, les documents douaniers et la communication avec les clients.
+> Nom de travail : le nom commercial définitif reste à valider.
 
-> **Statut :** conception et prototypage en cours.
+Plateforme SaaS multi-entreprises destinée aux transitaires, déclarants en douane et PME importatrices ou exportatrices du Sénégal.
 
-## Problème
+Le produit centralise les dossiers d'expédition, les conteneurs, les documents, le dédouanement, les notifications et le suivi maritime. Il couvre l'import comme l'export, le FCL comme le LCL, ainsi que le dédouanement interne, externe ou mixte.
 
-Dans le secteur de l'import-export, de nombreuses opérations sont encore suivies avec des tableurs, des documents dispersés et des échanges WhatsApp. Ce fonctionnement limite la visibilité en temps réel et peut entraîner des retards de dédouanement, des erreurs documentaires et des pénalités portuaires.
+## État actuel
 
-## Solution
+- socle Next.js 16, React 19 et TypeScript strict ;
+- site vitrine original et responsive sur `/` ;
+- première maquette responsive du tableau de bord ;
+- modèle métier national documenté ;
+- première migration PostgreSQL/Supabase avec isolation multi-tenant ;
+- principes DevSecOps et feuille de route initiale.
 
-La plateforme doit permettre de piloter chaque dossier depuis le départ d'usine jusqu'à la livraison finale à partir d'un espace unique et sécurisé.
+Les chiffres et expéditions visibles dans l'interface sont des données de démonstration.
 
-### MVP prévu
+## Démarrage local
 
-- Tableau de bord des expéditions et conteneurs
-- Parcours par étapes et suivi des échéances
-- Coffre-fort documentaire pour les Bill of Lading, factures et déclarations douanières
-- Détection des documents manquants
-- Portail client en libre-service
-- Notifications automatiques par e-mail et WhatsApp
-- Historique des événements et journal d'audit
-- Gestion des entreprises, utilisateurs, rôles et autorisations
+Prérequis : Node.js 20.9 ou supérieur.
 
-## Architecture cible du MVP
-
-- **Application web :** Next.js, React et TypeScript
-- **Interface :** Tailwind CSS
-- **Base de données :** Supabase PostgreSQL
-- **Authentification :** Supabase Auth
-- **Documents :** Supabase Storage avec buckets privés
-- **Backend initial :** Next.js Route Handlers et Server Actions
-- **Hébergement :** Vercel
-- **CI/CD :** GitHub Actions
-- **Sécurité :** SonarQube, Trivy, analyse des dépendances et détection de secrets
-- **Développement local :** Docker
-
-Un service **Python/FastAPI** pourra être ajouté pour les intégrations maritimes, l'analyse documentaire, l'OCR et les traitements asynchrones. **AWS** et **Terraform** seront introduits lorsque le projet nécessitera une infrastructure plus personnalisée.
-
-## Architecture fonctionnelle
-
-```mermaid
-flowchart TD
-    U["Transitaire ou importateur"] --> A["Application Next.js"]
-    A --> B["Supabase Auth"]
-    A --> C["PostgreSQL avec RLS"]
-    A --> D["Stockage documentaire privé"]
-    A --> E["E-mail et WhatsApp"]
-    A --> F["Service FastAPI"]
-    F --> G["API de tracking maritime"]
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
-## Sécurité et DevSecOps
+Puis ouvrir [http://localhost:3000](http://localhost:3000).
 
-Le projet suit une approche Security by Design :
+- site vitrine : [http://localhost:3000](http://localhost:3000) ;
+- prototype du tableau de bord : [http://localhost:3000/dashboard](http://localhost:3000/dashboard).
 
-- séparation des données entre entreprises avec Row Level Security ;
-- principe du moindre privilège ;
-- stockage privé et liens de téléchargement temporaires ;
-- contrôle des types et tailles de fichiers ;
-- journalisation des actions sensibles ;
-- secrets exclus du code source ;
-- analyses SAST et scans de vulnérabilités dans la CI/CD ;
-- tests automatiques avant déploiement ;
-- sauvegarde et restauration des données ;
-- mises à jour contrôlées des dépendances.
+## Vérifications
 
-## Modèle économique
+```bash
+npm run lint
+npm run build
+```
 
-Abonnement B2B adapté au volume mensuel de conteneurs ou de dossiers traités par chaque entreprise.
+## Documentation
 
-## Prochaines étapes
+- [Vision et périmètre produit](docs/PRODUCT.md)
+- [Modèle métier](docs/DOMAIN_MODEL.md)
+- [Sécurité](docs/SECURITY.md)
+- [Direction artistique](docs/DESIGN.md)
+- [Modèle économique](docs/BUSINESS_MODEL.md)
+- [Feuille de route](docs/ROADMAP.md)
+- [Décision d'architecture](docs/adr/0001-architecture.md)
 
-1. Modéliser le parcours réel d'un conteneur avec un professionnel du transit
-2. Définir les rôles et les règles d'accès
-3. Concevoir le schéma PostgreSQL multi-tenant
-4. Développer le tableau de bord et la gestion des dossiers
-5. Ajouter le coffre-fort documentaire
-6. Tester le MVP sur des opérations réelles
-7. Intégrer progressivement les API de tracking et les notifications
+## Règle sur les notes
+
+Les décisions utiles à toute l'équipe sont versionnées dans `docs/`. Les secrets, brouillons et notes privées vont dans `PROJECT_NOTES.local.md`, volontairement ignoré par Git. Aucun mot de passe, jeton API ou document client réel ne doit être envoyé sur GitHub.

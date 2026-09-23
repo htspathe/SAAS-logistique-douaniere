@@ -1,0 +1,42 @@
+import type { ShipmentSummary } from "@/lib/domain";
+
+export const demoShipments: ShipmentSummary[] = [
+  {
+    id: "1",
+    reference: "SN-IMP-0042",
+    client: "Sama Distribution",
+    direction: "IMPORT",
+    loadType: "FCL",
+    route: "Istanbul → Dakar",
+    phase: "IN_TRANSIT",
+    statusLabel: "En mer",
+    eta: "23 sept. 2026",
+    progress: 64,
+    containerNumber: "MSKU 482019 7",
+  },
+  {
+    id: "2",
+    reference: "SN-IMP-0038",
+    client: "Keur Équipement",
+    direction: "IMPORT",
+    loadType: "LCL",
+    route: "Shanghai → Dakar",
+    phase: "CUSTOMS",
+    statusLabel: "Dédouanement",
+    eta: "Arrivé le 18 sept.",
+    progress: 82,
+  },
+  {
+    id: "3",
+    reference: "SN-EXP-0031",
+    client: "Teranga Agro",
+    direction: "EXPORT",
+    loadType: "FCL",
+    route: "Dakar → Rotterdam",
+    phase: "ORIGIN",
+    statusLabel: "Au terminal",
+    eta: "Départ le 22 sept.",
+    progress: 38,
+    containerNumber: "TGHU 771204 2",
+  },
+];

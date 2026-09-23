@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f7fa;
+  --foreground: #182230;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(13, 168, 152, 0.2);
+}
+
+.landing-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.map-grid {
+  background-image:
+    linear-gradient(rgba(20, 98, 109, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 98, 109, 0.11) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.sea-lines {
+  background-image: repeating-radial-gradient(
+    ellipse at 50% 120%,
+    transparent 0,
+    transparent 12px,
+    rgba(255, 255, 255, 0.28) 13px,
+    transparent 14px
+  );
+}
+
+.container-ribs {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.025) 0,
+    rgba(255, 255, 255, 0.025) 22px,
+    rgba(0, 0, 0, 0.22) 23px,
+    rgba(255, 255, 255, 0.08) 25px,
+    rgba(255, 255, 255, 0.02) 28px
+  );
+}

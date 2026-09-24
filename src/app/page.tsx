@@ -252,8 +252,8 @@ export default function LandingPage() {
             <a href="#pour-qui" className="transition hover:text-white">Pour qui ?</a>
           </nav>
           <div className="ml-auto flex items-center gap-2 lg:ml-10">
-            <Link href="/dashboard" className="hidden rounded-lg px-3 py-2 text-[11px] font-bold text-white transition hover:bg-white/10 sm:block">Se connecter</Link>
-            <Link href="/dashboard" className="rounded-lg bg-[#e9c63f] px-3.5 py-2.5 text-[10px] font-extrabold text-[#11202e] transition hover:bg-[#f1d24f] sm:px-4 sm:text-[11px]">Voir la démo</Link>
+            <Link href="/auth/connexion" className="hidden rounded-lg px-3 py-2 text-[11px] font-bold text-white transition hover:bg-white/10 sm:block">Se connecter</Link>
+            <Link href="/auth/inscription" className="rounded-lg bg-[#e9c63f] px-3.5 py-2.5 text-[10px] font-extrabold text-[#11202e] transition hover:bg-[#f1d24f] sm:px-4 sm:text-[11px]">Créer un compte</Link>
           </div>
         </div>
       </header>
@@ -274,8 +274,8 @@ export default function LandingPage() {
               Centralisez vos dossiers, documents douaniers, alertes et suivis maritimes dans une plateforme conçue pour les réalités de l’import-export au Sénégal.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/dashboard" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0ca898] px-5 text-xs font-extrabold text-white transition hover:bg-[#0db8a7]">
-                Explorer le prototype <ArrowRight className="size-4" />
+              <Link href="/auth/inscription" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0ca898] px-5 text-xs font-extrabold text-white transition hover:bg-[#0db8a7]">
+                Créer mon compte <ArrowRight className="size-4" />
               </Link>
               <a href="#fonctionnalites" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/5 px-5 text-xs font-bold text-white transition hover:bg-white/10">
                 Découvrir la solution <ChevronRight className="size-4" />

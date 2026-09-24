@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
@@ -9,13 +10,13 @@ import {
   Boxes,
   CalendarClock,
   CheckCircle2,
-  ChevronDown,
   CircleUserRound,
   Clock3,
   Container,
   FileCheck2,
   FileText,
   LayoutDashboard,
+  LogOut,
   MapPinned,
   Menu,
   MoreHorizontal,
@@ -27,6 +28,8 @@ import {
 } from "lucide-react";
 import { demoShipments } from "@/data/demo";
 import type { ShipmentPhase } from "@/lib/domain";
+import { createClient } from "@/lib/supabase/server";
+import { signOut } from "@/app/auth/actions";
 
 export const metadata: Metadata = {
   title: "Tableau de bord",
@@ -92,7 +95,7 @@ const phaseStyles: Record<ShipmentPhase, string> = {
   CANCELLED: "bg-slate-100 text-slate-500",
 };
 
-function Sidebar() {
+function Sidebar({ displayName }: { displayName: string }) {
   return (
     <aside className="hidden w-[248px] shrink-0 flex-col bg-[#09223e] px-4 py-5 text-white lg:flex">
       <Link href="/" className="mb-8 flex items-center gap-3 px-2" aria-label="Retour au site TransitFlow SN">
@@ -145,20 +148,19 @@ function Sidebar() {
         </a>
         <div className="mt-3 flex items-center gap-3 rounded-xl bg-white/6 p-3">
           <div className="grid size-9 place-items-center rounded-full bg-teal-500 text-xs font-bold">
-            AD
+            <CircleUserRound className="size-5" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-semibold">Awa Diop</p>
-            <p className="truncate text-[10px] text-slate-400">Administratrice</p>
+            <p className="truncate text-xs font-semibold">{displayName}</p>
+            <p className="truncate text-[10px] text-slate-400">Compte connecté</p>
           </div>
-          <MoreHorizontal className="size-4 text-slate-400" />
         </div>
       </div>
     </aside>
   );
 }
 
-function Header() {
+function Header({ email }: { email: string }) {
   return (
     <header className="flex h-[72px] items-center gap-4 border-b border-slate-200/80 bg-white px-4 sm:px-7">
       <button
@@ -189,14 +191,18 @@ function Header() {
           <Bell className="size-[18px]" />
           <span className="absolute right-2 top-2 size-1.5 rounded-full bg-red-500 ring-2 ring-white" />
         </button>
-        <button
-          type="button"
+        <div
           className="flex items-center gap-2 rounded-lg border border-slate-200 px-2 py-1.5 text-slate-700 sm:px-3"
         >
           <CircleUserRound className="size-5 text-slate-500" />
-          <span className="hidden text-xs font-semibold sm:inline">Sama Transit</span>
-          <ChevronDown className="hidden size-3.5 text-slate-400 sm:block" />
-        </button>
+          <span className="hidden max-w-44 truncate text-xs font-semibold sm:inline" title={email}>{email}</span>
+        </div>
+        <form action={signOut}>
+          <button type="submit" className="flex items-center gap-2 rounded-lg border border-slate-200 p-2 text-xs font-semibold text-slate-600 hover:bg-slate-50" aria-label="Se déconnecter">
+            <LogOut className="size-4" />
+            <span className="hidden xl:inline">Déconnexion</span>
+          </button>
+        </form>
       </div>
     </header>
   );
@@ -475,13 +481,28 @@ function TimelineItem({
   );
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  // The proxy refreshes cookies; the page independently checks authentication.
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getClaims();
+  if (error || !data?.claims?.sub) redirect("/auth/connexion");
+
+  const email = typeof data.claims.email === "string" ? data.claims.email : "Mon compte";
+  const fullName: unknown = data.claims.user_metadata?.full_name;
+  const displayName = typeof fullName === "string" && fullName.trim()
+    ? fullName.trim().slice(0, 100)
+    : email;
+  const today = new Intl.DateTimeFormat("fr-SN", {
+    dateStyle: "long",
+    timeZone: "Africa/Dakar",
+  }).format(new Date());
+
   return (
     <main className="min-h-screen bg-[#f5f7fa] text-[#182230]">
       <div className="flex min-h-screen">
-        <Sidebar />
+        <Sidebar displayName={displayName} />
         <section className="min-w-0 flex-1">
-          <Header />
+          <Header email={email} />
           <div className="mx-auto max-w-[1460px] p-4 sm:p-7">
             <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
@@ -489,13 +510,13 @@ export default function DashboardPage() {
                   <span className="rounded-md bg-teal-50 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-teal-700">
                     Prototype MVP
                   </span>
-                  <span className="text-[11px] text-slate-400">Dimanche 20 septembre 2026</span>
+                  <span className="text-[11px] text-slate-400">{today}</span>
                 </div>
                 <h1 className="text-2xl font-bold tracking-tight text-[#102a43] sm:text-[28px]">
-                  Bonjour Awa, voici vos opérations
+                  Bonjour {displayName}, bienvenue
                 </h1>
                 <p className="mt-1 text-xs text-slate-500">
-                  Vue consolidée des imports, exports et formalités en cours.
+                  Aperçu avec données fictives. Vos dossiers réels seront disponibles à la prochaine étape.
                 </p>
               </div>
               <button

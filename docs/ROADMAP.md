@@ -13,7 +13,8 @@
 
 ## Phase 1 — Dossiers et organisations
 
-- [ ] authentification ;
+- [x] code d'authentification (inscription, connexion, confirmation, déconnexion et dashboard protégé) ;
+- [ ] validation de bout en bout sur le projet Supabase configuré ;
 - [ ] création d'organisation et invitations ;
 - [ ] rôles et politiques RLS testées ;
 - [ ] clients et contacts ;
@@ -57,4 +58,13 @@
 
 ## Prochaine livraison
 
-Créer l'authentification, l'organisation et le formulaire d'expédition, puis brancher ces écrans sur Supabase avec des données de test.
+Étape 2 : configurer Supabase et valider un cycle inscription → confirmation par e-mail → connexion → déconnexion. Le dashboard reste alimenté par des données fictives.
+
+Ensuite : création d'organisation, invitations, tests d'isolation entre entreprises puis formulaire d'expédition connecté à PostgreSQL.
+
+### À NOTER
+
+- Ne jamais publier de clé secrète/service-role ; utiliser uniquement l'URL et la clé publique Supabase dans les variables `NEXT_PUBLIC_*`.
+- Appliquer les migrations dans l'ordre après vérification de l'historique distant. La migration `0002` ajoute le profil automatique à chaque nouvelle inscription.
+- Configurer l'URL du site et les URL de redirection autorisées dans Supabase avant les essais d'e-mail.
+- L'authentification ne remplace pas les contrôles d'accès par entreprise : la validation RLS multi-entreprises reste à réaliser avant toute donnée réelle.

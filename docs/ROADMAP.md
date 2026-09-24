@@ -14,8 +14,11 @@
 ## Phase 1 — Dossiers et organisations
 
 - [x] code d'authentification (inscription, connexion, confirmation, déconnexion et dashboard protégé) ;
-- [ ] validation de bout en bout sur le projet Supabase configuré ;
-- [ ] création d'organisation et invitations ;
+- [x] validation de l'authentification sur le projet Supabase (confirmée par l'utilisateur) ;
+- [x] code de création d'organisation, propriétaire automatique et choix de l'entreprise active ;
+- [x] code des rôles OWNER / ADMIN / MEMBER et paramètres d'entreprise ;
+- [ ] application et validation des migrations organisation sur Supabase ;
+- [ ] invitations ;
 - [ ] rôles et politiques RLS testées ;
 - [ ] clients et contacts ;
 - [ ] création et modification d'expéditions ;
@@ -58,9 +61,9 @@
 
 ## Prochaine livraison
 
-Étape 2 : configurer Supabase et valider un cycle inscription → confirmation par e-mail → connexion → déconnexion. Le dashboard reste alimenté par des données fictives.
+Étape 3 : appliquer `0003` puis `0004` sur une base de test, créer deux entreprises avec deux comptes, puis valider l'isolation RLS avec `supabase/tests/organization_rls.sql`. Le dashboard reste alimenté par des données fictives ; seuls l'entreprise active, le rôle et les membres proviennent de la base.
 
-Ensuite : création d'organisation, invitations, tests d'isolation entre entreprises puis formulaire d'expédition connecté à PostgreSQL.
+Ensuite : invitations et formulaire d'expédition connecté à PostgreSQL.
 
 ### À NOTER
 
@@ -68,3 +71,5 @@ Ensuite : création d'organisation, invitations, tests d'isolation entre entrepr
 - Appliquer les migrations dans l'ordre après vérification de l'historique distant. La migration `0002` ajoute le profil automatique à chaque nouvelle inscription.
 - Configurer l'URL du site et les URL de redirection autorisées dans Supabase avant les essais d'e-mail.
 - L'authentification ne remplace pas les contrôles d'accès par entreprise : la validation RLS multi-entreprises reste à réaliser avant toute donnée réelle.
+- La création initiale associe automatiquement le compte connecté au rôle OWNER dans une transaction. Les rôles métier existants sont conservés ; MEMBER est en lecture seule. Aucune autopromotion ou création de membre par l'API publique n'est permise.
+- La préférence d'entreprise dans le cookie est revalidée contre les adhésions actives à chaque requête. Un compte déjà membre choisit son entreprise existante ; la création d'entreprises supplémentaires, les invitations et les transferts de propriété ne font pas partie de cet incrément.

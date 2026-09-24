@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
@@ -28,8 +27,9 @@ import {
 } from "lucide-react";
 import { demoShipments } from "@/data/demo";
 import type { ShipmentPhase } from "@/lib/domain";
-import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/auth/actions";
+import { requireOrganization } from "@/lib/organizations/server";
+import { roleLabels } from "@/lib/organizations/validation";
 
 export const metadata: Metadata = {
   title: "Tableau de bord",
@@ -95,7 +95,7 @@ const phaseStyles: Record<ShipmentPhase, string> = {
   CANCELLED: "bg-slate-100 text-slate-500",
 };
 
-function Sidebar({ displayName }: { displayName: string }) {
+function Sidebar({ displayName, role }: { displayName: string; role: string }) {
   return (
     <aside className="hidden w-[248px] shrink-0 flex-col bg-[#09223e] px-4 py-5 text-white lg:flex">
       <Link href="/" className="mb-8 flex items-center gap-3 px-2" aria-label="Retour au site TransitFlow SN">
@@ -139,20 +139,20 @@ function Sidebar({ displayName }: { displayName: string }) {
       </nav>
 
       <div className="mt-auto space-y-1 border-t border-white/10 pt-4">
-        <a
-          href="#"
+        <Link
+          href="/dashboard/organisation"
           className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] text-slate-300 hover:bg-white/7 hover:text-white"
         >
           <Settings className="size-[18px]" strokeWidth={1.8} />
-          Paramètres
-        </a>
+          Mon entreprise
+        </Link>
         <div className="mt-3 flex items-center gap-3 rounded-xl bg-white/6 p-3">
           <div className="grid size-9 place-items-center rounded-full bg-teal-500 text-xs font-bold">
             <CircleUserRound className="size-5" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-semibold">{displayName}</p>
-            <p className="truncate text-[10px] text-slate-400">Compte connecté</p>
+            <p className="truncate text-[10px] text-slate-400">{role}</p>
           </div>
         </div>
       </div>
@@ -482,13 +482,10 @@ function TimelineItem({
 }
 
 export default async function DashboardPage() {
-  // The proxy refreshes cookies; the page independently checks authentication.
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims?.sub) redirect("/auth/connexion");
-
-  const email = typeof data.claims.email === "string" ? data.claims.email : "Mon compte";
-  const fullName: unknown = data.claims.user_metadata?.full_name;
+  // Membership is read from PostgreSQL on every request, not from the cookie.
+  const { claims, membership } = await requireOrganization();
+  const email = typeof claims.email === "string" ? claims.email : "Mon compte";
+  const fullName: unknown = claims.user_metadata?.full_name;
   const displayName = typeof fullName === "string" && fullName.trim()
     ? fullName.trim().slice(0, 100)
     : email;
@@ -500,12 +497,15 @@ export default async function DashboardPage() {
   return (
     <main className="min-h-screen bg-[#f5f7fa] text-[#182230]">
       <div className="flex min-h-screen">
-        <Sidebar displayName={displayName} />
+        <Sidebar displayName={displayName} role={roleLabels[membership.role]} />
         <section className="min-w-0 flex-1">
           <Header email={email} />
           <div className="mx-auto max-w-[1460px] p-4 sm:p-7">
             <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
+                <Link href="/dashboard/organisation" className="mb-2 inline-flex max-w-full break-words text-sm font-semibold text-teal-700 hover:underline">
+                  {membership.organization.name} · Mon entreprise
+                </Link>
                 <div className="mb-1 flex items-center gap-2">
                   <span className="rounded-md bg-teal-50 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-teal-700">
                     Prototype MVP

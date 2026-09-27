@@ -30,6 +30,7 @@ import type { ShipmentPhase } from "@/lib/domain";
 import { signOut } from "@/app/auth/actions";
 import { requireOrganization } from "@/lib/organizations/server";
 import { roleLabels } from "@/lib/organizations/validation";
+import { canWriteShipments } from "@/lib/shipments/validation";
 
 export const metadata: Metadata = {
   title: "Tableau de bord",
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
 
 const navItems = [
   { label: "Vue d'ensemble", icon: LayoutDashboard, active: true, href: "/dashboard" },
-  { label: "Expéditions", icon: Container },
+  { label: "Expéditions", icon: Container, href: "/dashboard/expeditions" },
   { label: "Trafic maritime", icon: Ship },
   { label: "Documents", icon: FileText, badge: "7" },
   { label: "Clients", icon: UsersRound, href: "/dashboard/clients" },
@@ -507,6 +508,7 @@ export default async function DashboardPage() {
                   {membership.organization.name} · Mon entreprise
                 </Link>
                 <Link href="/dashboard/clients" className="mb-2 ml-4 inline-flex text-sm font-semibold text-teal-700 hover:underline">Clients</Link>
+                <Link href="/dashboard/expeditions" className="mb-2 ml-4 inline-flex text-sm font-semibold text-teal-800 hover:underline">Expéditions</Link>
                 <div className="mb-1 flex items-center gap-2">
                   <span className="rounded-md bg-teal-50 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-teal-700">
                     Prototype MVP
@@ -520,12 +522,10 @@ export default async function DashboardPage() {
                   Aperçu avec données fictives. Vos dossiers réels seront disponibles à la prochaine étape.
                 </p>
               </div>
-              <button
-                type="button"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#0ca898] px-4 text-xs font-semibold text-white shadow-sm shadow-teal-900/10 transition hover:bg-[#098f82]"
-              >
+              {canWriteShipments(membership.role) && <Link href="/dashboard/expeditions/nouveau"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-teal-800 px-4 text-sm font-semibold text-white hover:bg-teal-900">
                 <Plus className="size-4" /> Nouvelle expédition
-              </button>
+              </Link>}
             </div>
             <Stats />
             <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]">

@@ -23,7 +23,8 @@
 - [x] code clients et coordonnées principales (liste paginée, création, modification) ;
 - [ ] validation réelle des clients et de leurs politiques RLS sur Supabase ;
 - [ ] contacts multiples par client ;
-- [ ] création et modification d'expéditions ;
+- [x] code de création, liste, détail et modification d'expéditions import/export ;
+- [ ] validation réelle des expéditions et tests RLS sur Supabase ;
 - [ ] conteneurs, BL et bookings ;
 - [ ] historique des événements.
 
@@ -63,9 +64,9 @@
 
 ## Prochaine livraison
 
-Étape 4 : tester la création et la modification de clients dans deux entreprises distinctes, puis exécuter `supabase/tests/clients_rls.sql` sur une base de test. Les migrations `0001` à `0004` sont requises ; aucune nouvelle migration client n'est nécessaire. La liste clients utilise les données réelles de l'entreprise active. Les indicateurs et expéditions du dashboard restent fictifs.
+Étape 5 : suivre `docs/STEP5_TESTS.md` et exécuter `supabase/tests/shipments_rls.sql` sur une base de test. Les migrations `0001` à `0004` suffisent. Les listes Clients et Expéditions utilisent les données de l'entreprise active ; les indicateurs et exemples du dashboard restent fictifs.
 
-Ensuite : invitations et formulaire d'expédition connecté à PostgreSQL.
+Ensuite : historique des événements d'expédition, puis conteneurs et documents.
 
 ### À NOTER
 

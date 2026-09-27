@@ -25,13 +25,15 @@
 - [ ] contacts multiples par client ;
 - [x] code de création, liste, détail et modification d'expéditions import/export ;
 - [ ] validation réelle des expéditions et tests RLS sur Supabase ;
-- [ ] conteneurs, BL et bookings ;
-- [ ] historique des événements.
+- [x] code conteneurs (numéro ISO facultatif, scellé et type), BL et bookings ;
+- [x] code historique des événements manuels append-only ;
+- [ ] validation réelle des conteneurs et événements sur Supabase.
 
 ## Phase 2 — Documents et portail client
 
-- [ ] coffre-fort privé ;
-- [ ] catégories, versions et validation ;
+- [x] code coffre-fort privé : upload PDF/JPEG/PNG, catégories, liste et téléchargement signé ;
+- [ ] validation réelle upload/download et récupération des transferts sur Supabase ;
+- [ ] versions et analyse de sécurité des fichiers ;
 - [ ] partage contrôlé ;
 - [ ] portail client ;
 - [ ] journal des téléchargements.
@@ -64,9 +66,9 @@
 
 ## Prochaine livraison
 
-Étape 5 : suivre `docs/STEP5_TESTS.md` et exécuter `supabase/tests/shipments_rls.sql` sur une base de test. Les migrations `0001` à `0004` suffisent. Les listes Clients et Expéditions utilisent les données de l'entreprise active ; les indicateurs et exemples du dashboard restent fictifs.
+Étapes 6 et 7 : suivre `docs/STEP6_7_TESTS.md`, vérifier l'historique Supabase avant d'appliquer une seule fois `0005` puis `0006`, puis tester conteneurs, historique et documents avec deux entreprises. Les migrations et politiques sont testées localement ; les parcours API Supabase réels restent à vérifier. Les indicateurs et exemples du dashboard restent fictifs.
 
-Ensuite : historique des événements d'expédition, puis conteneurs et documents.
+Ensuite : valider ces parcours, puis invitations et portail client.
 
 ### À NOTER
 

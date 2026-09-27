@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ShipmentShell } from "@/components/shipments/shipment-shell";
+import { DossierNavigation } from "@/components/dossier/navigation";
 import { getShipment } from "@/lib/shipments/server";
 import { canWriteShipments, customsLabels, directionLabels, formatDakar, loadLabels, phaseLabels } from "@/lib/shipments/validation";
 
@@ -19,6 +20,7 @@ export default async function ShipmentPage({ params, searchParams }: {
     ["Création", formatDakar(shipment.created_at)], ["Dernière modification", formatDakar(shipment.updated_at)],
   ];
   return <ShipmentShell title={shipment.reference} organizationName={membership.organization.name}>
+    <DossierNavigation shipmentId={shipment.id} active="Résumé" />
     <div className="flex flex-wrap items-center justify-between gap-4">
       <p className="text-sm text-slate-600">Dates et heures de Dakar (UTC+0). Statut renseigné manuellement.</p>
       {canWriteShipments(membership.role) && <Link href={`/dashboard/expeditions/${shipment.id}/modifier`} className="rounded-md bg-teal-800 px-5 py-3 text-sm font-semibold text-white hover:bg-teal-900">Modifier le dossier</Link>}

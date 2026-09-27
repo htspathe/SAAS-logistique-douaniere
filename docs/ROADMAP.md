@@ -20,7 +20,9 @@
 - [ ] application et validation des migrations organisation sur Supabase ;
 - [ ] invitations ;
 - [ ] rôles et politiques RLS testées ;
-- [ ] clients et contacts ;
+- [x] code clients et coordonnées principales (liste paginée, création, modification) ;
+- [ ] validation réelle des clients et de leurs politiques RLS sur Supabase ;
+- [ ] contacts multiples par client ;
 - [ ] création et modification d'expéditions ;
 - [ ] conteneurs, BL et bookings ;
 - [ ] historique des événements.
@@ -61,7 +63,7 @@
 
 ## Prochaine livraison
 
-Étape 3 : appliquer `0003` puis `0004` sur une base de test, créer deux entreprises avec deux comptes, puis valider l'isolation RLS avec `supabase/tests/organization_rls.sql`. Le dashboard reste alimenté par des données fictives ; seuls l'entreprise active, le rôle et les membres proviennent de la base.
+Étape 4 : tester la création et la modification de clients dans deux entreprises distinctes, puis exécuter `supabase/tests/clients_rls.sql` sur une base de test. Les migrations `0001` à `0004` sont requises ; aucune nouvelle migration client n'est nécessaire. La liste clients utilise les données réelles de l'entreprise active. Les indicateurs et expéditions du dashboard restent fictifs.
 
 Ensuite : invitations et formulaire d'expédition connecté à PostgreSQL.
 
@@ -73,3 +75,4 @@ Ensuite : invitations et formulaire d'expédition connecté à PostgreSQL.
 - L'authentification ne remplace pas les contrôles d'accès par entreprise : la validation RLS multi-entreprises reste à réaliser avant toute donnée réelle.
 - La création initiale associe automatiquement le compte connecté au rôle OWNER dans une transaction. Les rôles métier existants sont conservés ; MEMBER est en lecture seule. Aucune autopromotion ou création de membre par l'API publique n'est permise.
 - La préférence d'entreprise dans le cookie est revalidée contre les adhésions actives à chaque requête. Un compte déjà membre choisit son entreprise existante ; la création d'entreprises supplémentaires, les invitations et les transferts de propriété ne font pas partie de cet incrément.
+- Clients : OWNER, ADMIN, OPERATIONS et CUSTOMS_AGENT peuvent écrire ; MEMBER et FINANCE consultent. Le nom est obligatoire ; e-mail, téléphone et identifiant fiscal sont facultatifs. Un formulaire ouvert avant un changement d'entreprise refuse l'enregistrement dans le nouveau contexte. Les contacts multiples et la suppression ne font pas partie de cet incrément.

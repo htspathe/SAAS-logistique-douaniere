@@ -37,11 +37,11 @@ export const metadata: Metadata = {
 };
 
 const navItems = [
-  { label: "Vue d'ensemble", icon: LayoutDashboard, active: true },
+  { label: "Vue d'ensemble", icon: LayoutDashboard, active: true, href: "/dashboard" },
   { label: "Expéditions", icon: Container },
   { label: "Trafic maritime", icon: Ship },
   { label: "Documents", icon: FileText, badge: "7" },
-  { label: "Clients", icon: UsersRound },
+  { label: "Clients", icon: UsersRound, href: "/dashboard/clients" },
 ];
 
 const stats: Array<{
@@ -117,9 +117,9 @@ function Sidebar({ displayName, role }: { displayName: string; role: string }) {
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
-            <a
+            <Link
               key={item.label}
-              href="#"
+              href={item.href ?? "#"}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition ${
                 item.active
                   ? "bg-white/11 text-white"
@@ -133,7 +133,7 @@ function Sidebar({ displayName, role }: { displayName: string; role: string }) {
                   {item.badge}
                 </span>
               ) : null}
-            </a>
+            </Link>
           );
         })}
       </nav>
@@ -506,6 +506,7 @@ export default async function DashboardPage() {
                 <Link href="/dashboard/organisation" className="mb-2 inline-flex max-w-full break-words text-sm font-semibold text-teal-700 hover:underline">
                   {membership.organization.name} · Mon entreprise
                 </Link>
+                <Link href="/dashboard/clients" className="mb-2 ml-4 inline-flex text-sm font-semibold text-teal-700 hover:underline">Clients</Link>
                 <div className="mb-1 flex items-center gap-2">
                   <span className="rounded-md bg-teal-50 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-teal-700">
                     Prototype MVP

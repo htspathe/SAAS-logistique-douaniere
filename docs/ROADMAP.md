@@ -66,6 +66,8 @@
 - [ ] pilote multi-entreprises ;
 - [ ] lancement commercial au Sénégal.
 
+Voir aussi le [plan de lancement chiffré et ses conditions de validation](PLAN_LANCEMENT_2026-10-16.md).
+
 ## État vérifié
 
 La mise à jour du 16 octobre 2026 (voir `docs/STATUS_2026-10-16.md`) relie les indicateurs et les dernières expéditions du dashboard aux données de l'organisation active. Les données AIS, alertes et activités d'exemple restent des simulations ; les tests Supabase distants ne sont pas revendiqués comme exécutés.

@@ -1,0 +1,43 @@
+name: Temporary dependency security remediation
+
+on:
+  push:
+    branches: [fix/security-dependencies-20261016]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Update patched direct dependencies and lockfile
+        run: |
+          npm install --save-exact next@16.4.2 eslint-config-next@16.4.2
+          npm audit fix || true
+
+      - name: Verify security and application
+        run: |
+          npm audit --omit=dev --audit-level=high
+          npm run check
+
+      - name: Commit generated lockfile and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm .github/workflows/temporary-security-fix.yml
+          git add -- package.json package-lock.json .github/workflows/temporary-security-fix.yml
+          git diff --cached --stat
+          git commit -m "fix(security): update Next.js and patched transitive packages"
+          git push origin HEAD:fix/security-dependencies-20261016

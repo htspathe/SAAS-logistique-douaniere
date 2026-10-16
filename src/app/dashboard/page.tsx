@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { z } from "zod";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -18,23 +19,22 @@ import {
   LogOut,
   MapPinned,
   Menu,
-  MoreHorizontal,
   Plus,
   Search,
   Settings,
   Ship,
   UsersRound,
 } from "lucide-react";
-import { demoShipments } from "@/data/demo";
 import type { ShipmentPhase } from "@/lib/domain";
+import { shipmentColumns } from "@/lib/shipments/server";
 import { signOut } from "@/app/auth/actions";
 import { requireOrganization } from "@/lib/organizations/server";
 import { roleLabels } from "@/lib/organizations/validation";
-import { canWriteShipments } from "@/lib/shipments/validation";
+import { canWriteShipments, formatDakar, phaseLabels, shipmentRecordSchema, type ShipmentRecord } from "@/lib/shipments/validation";
 
 export const metadata: Metadata = {
   title: "Tableau de bord",
-  description: "Prototype du cockpit opérationnel TransitFlow SN.",
+  description: "Tableau de bord opérationnel TransitFlow SN avec données de l’entreprise active.",
 };
 
 const navItems = [
@@ -45,42 +45,7 @@ const navItems = [
   { label: "Clients", icon: UsersRound, href: "/dashboard/clients" },
 ];
 
-const stats: Array<{
-  label: string;
-  value: string;
-  note: string;
-  icon: LucideIcon;
-  iconClass: string;
-}> = [
-  {
-    label: "Dossiers actifs",
-    value: "24",
-    note: "+4 ce mois",
-    icon: Boxes,
-    iconClass: "bg-slate-100 text-slate-700",
-  },
-  {
-    label: "Conteneurs en mer",
-    value: "11",
-    note: "3 arrivent cette semaine",
-    icon: Ship,
-    iconClass: "bg-blue-50 text-blue-700",
-  },
-  {
-    label: "En dédouanement",
-    value: "5",
-    note: "2 pièces attendues",
-    icon: FileCheck2,
-    iconClass: "bg-amber-50 text-amber-700",
-  },
-  {
-    label: "Alertes à traiter",
-    value: "3",
-    note: "1 alerte prioritaire",
-    icon: AlertTriangle,
-    iconClass: "bg-red-50 text-red-600",
-  },
-];
+type DashboardCounts = { active: number; transit: number; customs: number; clients: number };
 
 const phaseStyles: Record<ShipmentPhase, string> = {
   DRAFT: "bg-slate-100 text-slate-700",
@@ -120,7 +85,7 @@ function Sidebar({ displayName, role }: { displayName: string; role: string }) {
           return (
             <Link
               key={item.label}
-              href={item.href ?? "#"}
+              href={item.href ?? "/dashboard"}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition ${
                 item.active
                   ? "bg-white/11 text-white"
@@ -182,7 +147,7 @@ function Header({ email }: { email: string }) {
       </div>
       <div className="ml-auto flex items-center gap-2 sm:gap-3">
         <span className="hidden rounded-full bg-amber-50 px-3 py-1.5 text-[10px] font-semibold text-amber-800 md:inline-flex">
-          Données de démonstration
+          Maritime et alertes simulés
         </span>
         <button
           type="button"
@@ -209,26 +174,29 @@ function Header({ email }: { email: string }) {
   );
 }
 
-function Stats() {
+function Stats({ counts }: { counts: DashboardCounts }) {
+  const stats = [
+    { label: "Dossiers actifs", value: counts.active, note: "Hors dossiers terminés ou annulés", icon: Boxes, iconClass: "bg-slate-100 text-slate-700" },
+    { label: "Dossiers en transit", value: counts.transit, note: "Statut saisi dans les dossiers", icon: Ship, iconClass: "bg-blue-50 text-blue-700" },
+    { label: "En dédouanement", value: counts.customs, note: "Dossiers au statut « En douane »", icon: FileCheck2, iconClass: "bg-amber-50 text-amber-700" },
+    { label: "Clients enregistrés", value: counts.clients, note: "Clients de l'entreprise active", icon: UsersRound, iconClass: "bg-teal-50 text-teal-700" },
+  ];
   return (
-    <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Indicateurs">
+    <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Indicateurs réels de votre entreprise">
       {stats.map((stat) => {
         const Icon = stat.icon;
         return (
-          <article
-            key={stat.label}
-            className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
-          >
+          <article key={stat.label} className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.03)]">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-[11px] font-medium text-slate-500">{stat.label}</p>
                 <p className="mt-2 text-2xl font-bold tracking-tight text-[#102a43]">{stat.value}</p>
               </div>
-              <div className={`grid size-9 place-items-center rounded-lg ${stat.iconClass}`}>
+              <div className={"grid size-9 place-items-center rounded-lg " + stat.iconClass}>
                 <Icon className="size-[18px]" strokeWidth={1.9} />
               </div>
             </div>
-            <p className="mt-3 text-[10px] text-slate-400">{stat.note}</p>
+            <p className="mt-3 text-[10px] text-slate-500">{stat.note}</p>
           </article>
         );
       })}
@@ -236,94 +204,81 @@ function Stats() {
   );
 }
 
-function ShipmentsTable() {
+function ShipmentsTable({ shipments }: { shipments: ShipmentRecord[] }) {
   return (
     <section className="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.03)]">
       <div className="flex items-center justify-between border-b border-slate-100 px-4 py-4 sm:px-5">
         <div>
           <h2 className="text-sm font-bold text-[#102a43]">Expéditions récentes</h2>
-          <p className="mt-0.5 text-[10px] text-slate-400">Tous les modes de traitement réunis</p>
+          <p className="mt-0.5 text-[10px] text-slate-500">Dossiers enregistrés par votre entreprise</p>
         </div>
-        <a href="#" className="flex items-center gap-1 text-[11px] font-semibold text-teal-700">
+        <Link href="/dashboard/expeditions" className="flex items-center gap-1 text-[11px] font-semibold text-teal-700">
           Tout afficher <ArrowRight className="size-3.5" />
-        </a>
+        </Link>
       </div>
-
-      <div className="hidden overflow-x-auto md:block">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-slate-50/70 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400">
-              <th className="px-5 py-3">Dossier</th>
-              <th className="px-4 py-3">Trajet</th>
-              <th className="px-4 py-3">Type</th>
-              <th className="px-4 py-3">Statut</th>
-              <th className="px-4 py-3">Échéance</th>
-              <th className="px-4 py-3" aria-label="Actions" />
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {demoShipments.map((shipment) => (
-              <tr key={shipment.id} className="group text-[11px] hover:bg-slate-50/50">
-                <td className="px-5 py-4">
-                  <p className="font-bold text-[#17324d]">{shipment.reference}</p>
-                  <p className="mt-1 text-[10px] text-slate-400">{shipment.client}</p>
-                </td>
-                <td className="px-4 py-4">
-                  <p className="font-medium text-slate-700">{shipment.route}</p>
-                  <p className="mt-1 text-[10px] text-slate-400">
-                    {shipment.containerNumber ?? "Conteneur à confirmer"}
-                  </p>
-                </td>
-                <td className="px-4 py-4">
-                  <p className="font-semibold text-slate-700">
-                    {shipment.direction === "IMPORT" ? "Import" : "Export"}
-                  </p>
-                  <p className="mt-1 text-[10px] text-slate-400">{shipment.loadType}</p>
-                </td>
-                <td className="px-4 py-4">
-                  <span className={`inline-flex rounded-full px-2.5 py-1 text-[9px] font-bold ${phaseStyles[shipment.phase]}`}>
-                    {shipment.statusLabel}
-                  </span>
-                  <div className="mt-2 h-1 w-20 overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full rounded-full bg-teal-500" style={{ width: `${shipment.progress}%` }} />
+      {shipments.length === 0 ? (
+        <div className="px-5 py-10 text-center">
+          <p className="text-sm font-semibold text-slate-700">Aucune expédition enregistrée</p>
+          <Link href="/dashboard/expeditions" className="mt-2 inline-block text-xs font-semibold text-teal-800 underline">Consulter les dossiers</Link>
+        </div>
+      ) : (
+        <>
+          <div className="hidden overflow-x-auto md:block">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-slate-50/70 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500">
+                  <th className="px-5 py-3">Dossier</th>
+                  <th className="px-4 py-3">Trajet</th>
+                  <th className="px-4 py-3">Type</th>
+                  <th className="px-4 py-3">Statut</th>
+                  <th className="px-4 py-3">Arrivée prévue</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {shipments.map((shipment) => (
+                  <tr key={shipment.id} className="text-[11px] hover:bg-slate-50/50">
+                    <td className="px-5 py-4">
+                      <Link href={"/dashboard/expeditions/" + shipment.id} className="font-bold text-teal-800 underline">{shipment.reference}</Link>
+                      <p className="mt-1 text-[10px] text-slate-500">{shipment.client?.name ?? "Client non renseigné"}</p>
+                    </td>
+                    <td className="px-4 py-4">
+                      <p className="font-medium text-slate-700">{shipment.origin_name} → {shipment.destination_name}</p>
+                    </td>
+                    <td className="px-4 py-4 text-slate-700">
+                      {shipment.direction === "IMPORT" ? "Import" : "Export"} · {shipment.load_type}
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className={"inline-flex rounded-full px-2.5 py-1 text-[9px] font-bold " + phaseStyles[shipment.phase]}>
+                        {phaseLabels[shipment.phase]}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 text-[10px] text-slate-600">{formatDakar(shipment.estimated_arrival_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="divide-y divide-slate-100 md:hidden">
+            {shipments.map((shipment) => (
+              <article key={shipment.id} className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <Link href={"/dashboard/expeditions/" + shipment.id} className="text-xs font-bold text-teal-800 underline">{shipment.reference}</Link>
+                    <p className="mt-1 text-[10px] text-slate-500">{shipment.client?.name ?? "Client non renseigné"}</p>
                   </div>
-                </td>
-                <td className="px-4 py-4 text-[10px] font-medium text-slate-600">{shipment.eta}</td>
-                <td className="px-4 py-4">
-                  <button
-                    type="button"
-                    aria-label={`Actions pour ${shipment.reference}`}
-                    className="grid size-7 place-items-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                  >
-                    <MoreHorizontal className="size-4" />
-                  </button>
-                </td>
-              </tr>
+                  <span className={"rounded-full px-2.5 py-1 text-[9px] font-bold " + phaseStyles[shipment.phase]}>
+                    {phaseLabels[shipment.phase]}
+                  </span>
+                </div>
+                <p className="mt-3 text-[11px] font-medium text-slate-700">{shipment.origin_name} → {shipment.destination_name}</p>
+                <p className="mt-2 text-[10px] text-slate-500">
+                  {shipment.direction === "IMPORT" ? "Import" : "Export"} · {shipment.load_type} · {formatDakar(shipment.estimated_arrival_at)}
+                </p>
+              </article>
             ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="divide-y divide-slate-100 md:hidden">
-        {demoShipments.map((shipment) => (
-          <article key={shipment.id} className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-xs font-bold text-[#17324d]">{shipment.reference}</p>
-                <p className="mt-1 text-[10px] text-slate-400">{shipment.client}</p>
-              </div>
-              <span className={`rounded-full px-2.5 py-1 text-[9px] font-bold ${phaseStyles[shipment.phase]}`}>
-                {shipment.statusLabel}
-              </span>
-            </div>
-            <p className="mt-3 text-[11px] font-medium text-slate-700">{shipment.route}</p>
-            <div className="mt-2 flex items-center justify-between text-[10px] text-slate-400">
-              <span>{shipment.direction === "IMPORT" ? "Import" : "Export"} · {shipment.loadType}</span>
-              <span>{shipment.eta}</span>
-            </div>
-          </article>
-        ))}
-      </div>
+          </div>
+        </>
+      )}
     </section>
   );
 }
@@ -337,7 +292,7 @@ function MaritimeTraffic() {
           <p className="mt-0.5 text-[10px] text-slate-400">Zone du port de Dakar · simulation</p>
         </div>
         <span className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[9px] font-bold text-emerald-700">
-          <span className="size-1.5 rounded-full bg-emerald-500" /> AIS prêt
+          <span className="size-1.5 rounded-full bg-emerald-500" /> Simulation
         </span>
       </div>
       <div className="relative mx-4 h-[238px] overflow-hidden rounded-xl bg-[#dff3f5]">
@@ -419,7 +374,7 @@ function BottomPanels() {
       <section className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.03)]">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-bold text-[#102a43]">Actions prioritaires</h2>
+            <h2 className="text-sm font-bold text-[#102a43]">Exemples d’actions (simulation)</h2>
             <p className="mt-0.5 text-[10px] text-slate-400">Échéances et anomalies à traiter</p>
           </div>
           <CalendarClock className="size-5 text-slate-400" />
@@ -443,10 +398,10 @@ function BottomPanels() {
       <section className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.03)]">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-bold text-[#102a43]">Activité récente</h2>
+            <h2 className="text-sm font-bold text-[#102a43]">Exemple de journal (simulation)</h2>
             <p className="mt-0.5 text-[10px] text-slate-400">Événements opérationnels et documents</p>
           </div>
-          <a href="#" className="text-[10px] font-semibold text-teal-700">Voir le journal</a>
+          <Link href="/dashboard/expeditions" className="text-[10px] font-semibold text-teal-700">Voir les expéditions</Link>
         </div>
         <ol className="relative space-y-4 before:absolute before:bottom-2 before:left-[15px] before:top-2 before:w-px before:bg-slate-200">
           <TimelineItem icon={Ship} color="bg-blue-50 text-blue-700" title="Le navire a quitté Las Palmas" detail="SN-IMP-0042 · il y a 32 minutes" />
@@ -484,7 +439,33 @@ function TimelineItem({
 
 export default async function DashboardPage() {
   // Membership is read from PostgreSQL on every request, not from the cookie.
-  const { claims, membership } = await requireOrganization();
+  const { claims, membership, supabase } = await requireOrganization();
+  const organizationId = membership.organization_id;
+  const [recent, active, transit, customs, clients] = await Promise.all([
+    supabase.from("shipments").select(shipmentColumns)
+      .eq("organization_id", organizationId).order("created_at", { ascending: false }).order("id").limit(5),
+    supabase.from("shipments").select("id", { count: "exact", head: true })
+      .eq("organization_id", organizationId).neq("phase", "COMPLETED").neq("phase", "CANCELLED"),
+    supabase.from("shipments").select("id", { count: "exact", head: true })
+      .eq("organization_id", organizationId).eq("phase", "IN_TRANSIT"),
+    supabase.from("shipments").select("id", { count: "exact", head: true })
+      .eq("organization_id", organizationId).eq("phase", "CUSTOMS"),
+    supabase.from("clients").select("id", { count: "exact", head: true })
+      .eq("organization_id", organizationId),
+  ]);
+  if (recent.error || active.error || transit.error || customs.error || clients.error) {
+    console.error("Indicateurs du tableau de bord indisponibles", {
+      codes: [recent.error?.code, active.error?.code, transit.error?.code, customs.error?.code, clients.error?.code].filter(Boolean),
+    });
+    throw new Error("Impossible de charger le tableau de bord de cette entreprise.");
+  }
+  const shipments = z.array(shipmentRecordSchema).parse(recent.data);
+  const counts: DashboardCounts = {
+    active: active.count ?? 0,
+    transit: transit.count ?? 0,
+    customs: customs.count ?? 0,
+    clients: clients.count ?? 0,
+  };
   const email = typeof claims.email === "string" ? claims.email : "Mon compte";
   const fullName: unknown = claims.user_metadata?.full_name;
   const displayName = typeof fullName === "string" && fullName.trim()
@@ -519,7 +500,7 @@ export default async function DashboardPage() {
                   Bonjour {displayName}, bienvenue
                 </h1>
                 <p className="mt-1 text-xs text-slate-500">
-                  Aperçu avec données fictives. Vos dossiers réels seront disponibles à la prochaine étape.
+                  Indicateurs et expéditions réels de votre entreprise. Le suivi maritime et les exemples d’alertes restent simulés.
                 </p>
               </div>
               {canWriteShipments(membership.role) && <Link href="/dashboard/expeditions/nouveau"
@@ -527,9 +508,9 @@ export default async function DashboardPage() {
                 <Plus className="size-4" /> Nouvelle expédition
               </Link>}
             </div>
-            <Stats />
+            <Stats counts={counts} />
             <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]">
-              <ShipmentsTable />
+              <ShipmentsTable shipments={shipments} />
               <MaritimeTraffic />
             </div>
             <BottomPanels />

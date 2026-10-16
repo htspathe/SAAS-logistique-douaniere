@@ -6,23 +6,27 @@ Plateforme SaaS multi-entreprises destinée aux transitaires, déclarants en dou
 
 Le produit centralise les dossiers d'expédition, les conteneurs, les documents, le dédouanement, les notifications et le suivi maritime. Il couvre l'import comme l'export, le FCL comme le LCL, ainsi que le dédouanement interne, externe ou mixte.
 
-## État actuel
+## État actuel (16 octobre 2026)
 
-- socle Next.js 16, React 19 et TypeScript strict ;
-- site vitrine original et responsive sur `/` ;
-- première maquette responsive du tableau de bord ;
-- modèle métier national documenté ;
-- première migration PostgreSQL/Supabase avec isolation multi-tenant ;
-- principes DevSecOps et feuille de route initiale.
+- Next.js 16, React 19, TypeScript strict et Supabase/PostgreSQL ;
+- vitrine responsive, connexion et inscription ;
+- organisations, rôles et isolation multi-entreprises conçue autour des politiques RLS ;
+- gestion des clients, expéditions import/export, conteneurs et événements manuels append-only ;
+- documents privés (upload PDF/JPEG/PNG, empreinte SHA-256, téléchargement signé) ;
+- page d'accueil du tableau de bord : compteurs et 5 dernières expéditions issus des données de l'entreprise active ;
+- carte maritime AIS, alertes et journal de la page d'accueil **encore simulés**.
 
-Les chiffres et expéditions visibles dans l'interface sont des données de démonstration.
+**Statut : MVP en développement, non validé pour des données clients réelles.**
+Les migrations 0005/0006, les scénarios multi-entreprises en conditions Supabase réelles et les URL signées doivent être vérifiés avant tout pilote. Ne pas considérer le dashboard comme une source de positions AIS ni de notifications réellement envoyées.
+
+Voir [l'état détaillé et la checklist de validation](docs/STATUS_2026-10-16.md), puis [les tests des étapes 6 et 7](docs/STEP6_7_TESTS.md).
 
 ## Démarrage local
 
 Prérequis : Node.js 20.9 ou supérieur.
 
 ```bash
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
@@ -30,13 +34,12 @@ npm run dev
 Puis ouvrir [http://localhost:3000](http://localhost:3000).
 
 - site vitrine : [http://localhost:3000](http://localhost:3000) ;
-- prototype du tableau de bord : [http://localhost:3000/dashboard](http://localhost:3000/dashboard).
+- tableau de bord (session et organisation requises) : [http://localhost:3000/dashboard](http://localhost:3000/dashboard).
 
 ## Vérifications
 
 ```bash
-npm run lint
-npm run build
+npm run check
 ```
 
 ## Documentation

@@ -24,6 +24,8 @@
 - [ ] validation réelle des clients et de leurs politiques RLS sur Supabase ;
 - [ ] contacts multiples par client ;
 - [x] code de création, liste, détail et modification d'expéditions import/export ;
+- [x] tableau de bord branché aux compteurs et cinq dossiers récents de l'entreprise active (carte maritime et exemples d'alertes encore simulés) ;
+- [ ] validation réelle du tableau de bord avec deux entreprises et comptes distincts ;
 - [ ] validation réelle des expéditions et tests RLS sur Supabase ;
 - [x] code conteneurs (numéro ISO facultatif, scellé et type), BL et bookings ;
 - [x] code historique des événements manuels append-only ;
@@ -63,6 +65,12 @@
 - [ ] audit de sécurité ;
 - [ ] pilote multi-entreprises ;
 - [ ] lancement commercial au Sénégal.
+
+Voir aussi le [plan de lancement chiffré et ses conditions de validation](PLAN_LANCEMENT_2026-10-16.md).
+
+## État vérifié
+
+La mise à jour du 16 octobre 2026 (voir `docs/STATUS_2026-10-16.md`) relie les indicateurs et les dernières expéditions du dashboard aux données de l'organisation active. Les données AIS, alertes et activités d'exemple restent des simulations ; les tests Supabase distants ne sont pas revendiqués comme exécutés.
 
 ## Prochaine livraison
 

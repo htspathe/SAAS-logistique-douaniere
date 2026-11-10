@@ -3,26 +3,16 @@ import Link from "next/link";
 import {
   Anchor,
   ArrowRight,
-  BellRing,
   Box,
-  Building2,
   Check,
   ChevronRight,
   CircleCheck,
   Clock3,
-  FileCheck2,
-  FileText,
-  Fingerprint,
   Globe2,
-  Landmark,
-  LockKeyhole,
   MapPin,
   Navigation,
   Radar,
-  Route,
-  ShieldCheck,
   Ship,
-  Sparkles,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -36,49 +26,43 @@ export const metadata: Metadata = {
 const capabilities = [
   { value: "Import + Export", label: "Deux flux, un seul espace" },
   { value: "FCL + LCL", label: "Conteneurs et groupage" },
-  { value: "E-mail + WhatsApp", label: "Alertes automatisées" },
-  { value: "AIS + ETA", label: "Visibilité maritime" },
+  { value: "Documents privés", label: "Pièces PDF et images autorisées" },
+  { value: "AIS + ETA", label: "Intégration encore à l'étude" },
 ];
 
 const features = [
   {
     number: "01",
-    icon: Route,
     title: "Pilotez chaque dossier",
     text: "Imports, exports, FCL et LCL suivent un parcours commun, avec les étapes adaptées à chaque opération.",
     tags: ["Timeline", "Échéances", "Responsables"],
   },
   {
     number: "02",
-    icon: FileCheck2,
-    title: "Centralisez vos documents",
-    text: "BL, factures, déclarations et preuves de livraison restent classés, versionnés et accessibles aux bonnes personnes.",
-    tags: ["Coffre-fort", "Versions", "Partage contrôlé"],
+    title: "Retrouvez vos pièces",
+    text: "Déposez les documents PDF ou image autorisés et retrouvez-les dans leur dossier. Le versionnage est prévu pour la suite.",
+    tags: ["Fichiers privés", "Téléchargement signé", "Contrôle d'accès"],
   },
   {
     number: "03",
-    icon: BellRing,
-    title: "Anticipez les blocages",
-    text: "Les équipes et les clients sont prévenus avant une arrivée, une échéance ou lorsqu'une pièce manque au dossier.",
-    tags: ["Alertes", "E-mail", "WhatsApp"],
+    title: "Suivez les événements saisis",
+    text: "Consultez l'historique des étapes enregistrées manuellement. Les alertes automatiques seront développées après validation du socle.",
+    tags: ["Historique", "Statuts", "Événements manuels"],
   },
 ];
 
 const audiences = [
   {
-    icon: Ship,
     title: "Transitaires",
-    text: "Un cockpit opérationnel pour gérer plusieurs clients et dossiers sans multiplier les fichiers.",
+    text: "Un même espace pour les clients, les dossiers et les conteneurs.",
   },
   {
-    icon: Landmark,
     title: "Déclarants",
     text: "Des formalités, documents et statuts douaniers suivis dans le même historique.",
   },
   {
-    icon: Building2,
     title: "PME import-export",
-    text: "Une vision simple de la marchandise, des délais et des actions encore nécessaires.",
+    text: "Des dossiers centralisés pour faciliter les échanges avec les transitaires.",
   },
 ];
 
@@ -104,18 +88,18 @@ function ContainerScene() {
   return (
     <div className="relative mx-auto aspect-[5/4] w-full max-w-[620px] overflow-hidden rounded-[28px] border border-white/10 bg-[#0d2b47] shadow-[0_40px_90px_rgba(0,0,0,0.3)]">
       <div className="landing-grid absolute inset-0 opacity-30" />
-      <div className="absolute inset-x-0 bottom-0 h-[31%] bg-gradient-to-b from-[#0a9f9a] to-[#087d81]">
+      <div className="absolute inset-x-0 bottom-0 h-[31%] bg-[#087d81]">
         <div className="sea-lines absolute inset-0 opacity-30" />
       </div>
 
-      <div className="absolute left-[8%] top-[10%] flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-3 py-2 text-[10px] font-semibold text-white backdrop-blur-md">
+      <div className="absolute left-[8%] top-[10%] flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-3 py-2 text-[10px] font-semibold text-white">
         <span className="size-1.5 rounded-full bg-[#56e0c9] shadow-[0_0_10px_#56e0c9]" />
         Zone portuaire de Dakar
       </div>
 
-      <div className="absolute right-[7%] top-[9%] rounded-xl border border-white/10 bg-[#071b2e]/80 p-3 text-white shadow-xl backdrop-blur-md">
-        <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-slate-400">ETA mise à jour</p>
-        <p className="mt-1 text-sm font-bold">23 sept. · 08:30</p>
+      <div className="absolute right-[7%] top-[9%] rounded-xl border border-white/10 bg-[#071b2e]/80 p-3 text-white shadow-xl">
+        <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-slate-400">ETA (simulation)</p>
+        <p className="mt-1 text-sm font-bold">Données fictives</p>
       </div>
 
       <div className="absolute left-1/2 top-0 h-[24%] w-px -translate-x-1/2 bg-[#e9c63f]" />
@@ -139,7 +123,7 @@ function ContainerScene() {
             </div>
           </div>
           <p className="absolute bottom-4 right-5 font-mono text-[8px] text-slate-400 sm:bottom-6 sm:right-8 sm:text-[10px]">
-            TRFU 240926 5 · SN
+            EXEMPLE DE CONTENEUR
           </p>
         </div>
       </div>
@@ -179,7 +163,7 @@ function ProductPreview() {
           <span className="size-2 rounded-full bg-[#ff6b6b]" />
           <span className="size-2 rounded-full bg-[#e9c63f]" />
           <span className="size-2 rounded-full bg-[#0ca898]" />
-          <span className="ml-4 hidden rounded-md bg-slate-100 px-16 py-1 text-[7px] text-slate-400 sm:block">app.transitflow.sn/dashboard</span>
+          <span className="ml-4 hidden rounded-md bg-slate-100 px-16 py-1 text-[7px] text-slate-400 sm:block">Aperçu d’interface (simulation)</span>
         </div>
         <div className="grid min-h-[430px] md:grid-cols-[180px_1fr]">
           <aside className="hidden bg-[#09223e] p-4 text-white md:block">
@@ -226,9 +210,9 @@ function ProductPreview() {
                 <div className="absolute -left-8 top-0 h-full w-[44%] rounded-[45%] bg-[#d8c9a6]" />
                 <span className="absolute left-[42%] top-[36%] grid size-7 place-items-center rounded-full bg-[#0ca898] text-white shadow-lg"><Ship className="size-3.5 -rotate-12" /></span>
                 <span className="absolute right-[19%] top-[62%] grid size-5 place-items-center rounded-full bg-[#09223e] text-white"><Ship className="size-2.5 rotate-12" /></span>
-                <div className="absolute bottom-3 left-3 right-3 rounded-lg bg-white/90 p-3 backdrop-blur">
+                <div className="absolute bottom-3 left-3 right-3 rounded-lg bg-white/90 p-3">
                   <div className="flex items-center justify-between"><p className="text-[8px] font-bold text-[#09223e]">Trafic maritime</p><span className="size-1.5 rounded-full bg-[#0ca898]" /></div>
-                  <p className="mt-1 text-[7px] text-slate-400">Positions et ETA centralisés</p>
+                  <p className="mt-1 text-[7px] text-slate-400">Simulation, aucune donnée AIS réelle</p>
                 </div>
               </div>
             </div>
@@ -260,21 +244,19 @@ export default function LandingPage() {
 
       <section className="relative bg-[#071827] pb-20 pt-32 text-white sm:pb-28 sm:pt-40">
         <div className="landing-grid absolute inset-0 opacity-[0.09]" />
-        <div className="absolute -left-48 top-20 size-[520px] rounded-full bg-[#0ca898]/15 blur-[120px]" />
-        <div className="absolute -right-48 bottom-0 size-[520px] rounded-full bg-[#e9c63f]/10 blur-[130px]" />
+        
+        
         <div className="relative mx-auto grid max-w-[1280px] items-center gap-14 px-5 sm:px-8 lg:grid-cols-[.92fr_1.08fr] lg:gap-10">
           <div className="max-w-[620px]">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[9px] font-bold uppercase tracking-[0.17em] text-[#72d9ce]">
-              <Sparkles className="size-3" /> La logistique sénégalaise, mieux connectée
-            </div>
+            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.17em] text-[#72d9ce]">Gestion du transit au Sénégal</p>
             <h1 className="text-[46px] font-black leading-[0.98] tracking-[-0.055em] sm:text-[68px] lg:text-[76px]">
-              Chaque expédition, <span className="font-serif font-normal italic text-[#e9c63f]">sous contrôle.</span>
+              Vos dossiers de transit, dans un même espace.
             </h1>
             <p className="mt-7 max-w-[540px] text-sm leading-7 text-slate-300 sm:text-base">
-              Centralisez vos dossiers, documents douaniers, alertes et suivis maritimes dans une plateforme conçue pour les réalités de l’import-export au Sénégal.
+              Gérez vos clients, vos expéditions et vos documents depuis un seul espace. Le suivi maritime automatisé et les notifications restent en développement.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/auth/inscription" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0ca898] px-5 text-xs font-extrabold text-white transition hover:bg-[#0db8a7]">
+              <Link href="/auth/inscription" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#087f75] px-5 text-xs font-extrabold text-white transition hover:bg-[#065e56]">
                 Créer mon compte <ArrowRight className="size-4" />
               </Link>
               <a href="#fonctionnalites" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/5 px-5 text-xs font-bold text-white transition hover:bg-white/10">
@@ -283,7 +265,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-9 flex flex-wrap gap-x-5 gap-y-2 text-[10px] font-semibold text-slate-400">
               <span className="flex items-center gap-1.5"><Check className="size-3 text-[#72d9ce]" /> Multi-entreprises</span>
-              <span className="flex items-center gap-1.5"><Check className="size-3 text-[#72d9ce]" /> Portail client</span>
+              <span className="flex items-center gap-1.5"><Check className="size-3 text-[#72d9ce]" /> Dossiers import et export</span>
               <span className="flex items-center gap-1.5"><Check className="size-3 text-[#72d9ce]" /> Sécurité intégrée</span>
             </div>
           </div>
@@ -307,28 +289,22 @@ export default function LandingPage() {
           <div className="grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
             <div>
               <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#0ca898]">Le cœur de la plateforme</p>
-              <h2 className="mt-4 max-w-[520px] text-4xl font-black leading-[1.02] tracking-[-0.045em] sm:text-5xl">Du quai au client, plus aucun angle mort.</h2>
+              <h2 className="mt-4 max-w-[520px] text-4xl font-black leading-[1.02] tracking-[-0.045em] sm:text-5xl">Des opérations suivies dossier par dossier.</h2>
             </div>
-            <p className="max-w-[560px] text-sm leading-7 text-[#5c6867] lg:ml-auto">TransitFlow rassemble ce qui était dispersé entre tableurs, dossiers locaux, appels et messages. Chaque acteur retrouve l’information utile, sans exposer les données des autres entreprises.</p>
+            <p className="max-w-[560px] text-sm leading-7 text-[#5c6867] lg:ml-auto">TransitFlow regroupe les clients, expéditions, documents et événements saisis par votre équipe. Les contrôles d’accès multi-entreprises doivent encore être validés en conditions réelles avant le pilote.</p>
           </div>
 
-          <div className="mt-16 grid gap-4 lg:grid-cols-3">
-            {features.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <article key={feature.number} className="group relative overflow-hidden rounded-[22px] border border-[#d9d6cc] bg-[#fdfcf8] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#0ca898]/40 hover:shadow-[0_22px_55px_rgba(9,34,62,0.09)] sm:p-8">
-                  <div className="flex items-center justify-between">
-                    <span className="grid size-11 place-items-center rounded-xl bg-[#e2f5f2] text-[#087f75]"><Icon className="size-5" /></span>
-                    <span className="font-mono text-[10px] font-bold text-[#a0a6a2]">{feature.number}</span>
-                  </div>
-                  <h3 className="mt-8 text-xl font-black tracking-[-0.03em]">{feature.title}</h3>
-                  <p className="mt-3 text-xs leading-6 text-[#697371]">{feature.text}</p>
-                  <div className="mt-7 flex flex-wrap gap-2">
-                    {feature.tags.map((tag) => <span key={tag} className="rounded-full border border-[#d9d6cc] bg-white px-2.5 py-1.5 text-[8px] font-bold text-[#5e6967]">{tag}</span>)}
-                  </div>
-                </article>
-              );
-            })}
+          <div className="mt-16 divide-y divide-[#d9d6cc] border-y border-[#d9d6cc]">
+            {features.map((feature) => (
+              <article key={feature.number} className="grid gap-4 py-8 sm:py-10 lg:grid-cols-[80px_minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-10">
+                <p className="font-mono text-sm font-bold text-[#087f75]">{feature.number}</p>
+                <div>
+                  <h3 className="text-xl font-bold tracking-tight">{feature.title}</h3>
+                  <p className="mt-3 max-w-xl text-sm leading-7 text-[#465958]">{feature.text}</p>
+                </div>
+                <p className="self-center text-xs leading-6 text-[#536461]">{feature.tags.join("  /  ")}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -358,19 +334,19 @@ export default function LandingPage() {
             </svg>
             <span className="absolute left-[58%] top-[31%] grid size-12 place-items-center rounded-full bg-[#09223e] text-white shadow-[0_12px_30px_rgba(9,34,62,0.35)]"><Ship className="size-5 -rotate-12" /></span>
             <span className="absolute right-[12%] top-[40%] grid size-8 place-items-center rounded-full bg-[#0ca898] text-white shadow-lg"><Navigation className="size-3.5 rotate-45" /></span>
-            <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/40 bg-white/90 p-5 shadow-xl backdrop-blur-md">
-              <div className="flex items-center justify-between"><div><p className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">MSC Kumsal</p><p className="mt-1 text-sm font-black">En approche de Dakar</p></div><span className="rounded-full bg-teal-50 px-3 py-1.5 text-[9px] font-bold text-teal-700">12.4 kn</span></div>
-              <div className="mt-4 grid grid-cols-3 gap-3 border-t border-slate-200 pt-4 text-[9px]"><div><p className="text-slate-400">ETA</p><p className="mt-1 font-bold">23 sept.</p></div><div><p className="text-slate-400">Cap</p><p className="mt-1 font-bold">218°</p></div><div><p className="text-slate-400">Source</p><p className="mt-1 font-bold">AIS</p></div></div>
+            <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/40 bg-white/90 p-5 shadow-xl">
+              <div className="flex items-center justify-between"><div><p className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">Navire illustratif</p><p className="mt-1 text-sm font-black">En approche de Dakar</p></div><span className="rounded-full bg-teal-50 px-3 py-1.5 text-[9px] font-bold text-teal-700">12.4 kn</span></div>
+              <div className="mt-4 grid grid-cols-3 gap-3 border-t border-slate-200 pt-4 text-[9px]"><div><p className="text-slate-400">ETA</p><p className="mt-1 font-bold">23 sept.</p></div><div><p className="text-slate-400">Cap</p><p className="mt-1 font-bold">218°</p></div><div><p className="text-slate-400">Source</p><p className="mt-1 font-bold">Simulation</p></div></div>
             </div>
           </div>
           <div>
             <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#0ca898]">Suivi maritime</p>
-            <h2 className="mt-4 text-4xl font-black leading-[1.03] tracking-[-0.045em] sm:text-5xl">Le navire sur la carte. Le dossier dans son contexte.</h2>
-            <p className="mt-6 text-sm leading-7 text-[#5c6867]">La position AIS est reliée au voyage, au BL et au conteneur. Vous voyez la dernière mise à jour, l’ETA et les événements logistiques sans confondre suivi du navire et preuve de chargement.</p>
+            <h2 className="mt-4 text-4xl font-black leading-[1.03] tracking-[-0.045em] sm:text-5xl">Suivi maritime : une intégration à construire.</h2>
+            <p className="mt-6 text-sm leading-7 text-[#5c6867]">Le prototype illustre le suivi des navires, sans données réelles. Le suivi AIS et les événements conteneurs nécessitent des fournisseurs distincts et des licences adaptées.</p>
             <div className="mt-8 space-y-4">
               {[{ icon: Radar, text: "Position, vitesse, cap et dernière actualisation" }, { icon: Clock3, text: "ETA, retards et changements d'itinéraire" }, { icon: Globe2, text: "Départ, transbordements et arrivée à Dakar" }].map((item) => <div key={item.text} className="flex items-center gap-3 text-xs font-bold"><span className="grid size-9 place-items-center rounded-lg bg-[#e2f5f2] text-[#087f75]"><item.icon className="size-4" /></span>{item.text}</div>)}
             </div>
-            <p className="mt-7 rounded-xl border border-[#e2c65e]/30 bg-[#fff9dd] p-4 text-[10px] leading-5 text-[#716126]">Les positions affichées dans le prototype sont simulées. Les données réelles seront activées après sélection du fournisseur AIS.</p>
+            <p className="mt-7 rounded-xl border border-[#e2c65e]/30 bg-[#fff9dd] p-4 text-[10px] leading-5 text-[#716126]">Toutes les positions, vitesses et dates présentées ici sont fictives. Aucune disponibilité d’une API AIS ou de suivi conteneur n’est garantie.</p>
           </div>
         </div>
       </section>
@@ -378,12 +354,14 @@ export default function LandingPage() {
       <section id="securite" className="bg-[#e9c63f] px-5 py-20 sm:px-8 sm:py-24">
         <div className="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[.75fr_1.25fr] lg:items-center">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#09223e] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.16em] text-white"><ShieldCheck className="size-3.5" /> DevSecOps dès le départ</span>
+            <p className="text-xs font-semibold uppercase tracking-wider">Sécurité et confidentialité</p>
             <h2 className="mt-6 text-4xl font-black leading-[1.02] tracking-[-0.05em] sm:text-5xl">Vos dossiers restent vos dossiers.</h2>
-            <p className="mt-5 text-sm leading-7 text-[#4e4a31]">Chaque entreprise dispose de son espace isolé. Les accès, les documents et les actions sensibles sont contrôlés et traçables.</p>
+            <p className="mt-5 text-sm leading-7 text-[#4e4a31]">L’application est conçue pour séparer les dossiers de chaque entreprise. La validation des règles RLS et du stockage sur une instance Supabase réelle reste obligatoire avant tout pilote.</p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            {[{ icon: Fingerprint, title: "Accès maîtrisés", text: "Rôles distincts pour équipes, déclarants et clients." }, { icon: LockKeyhole, title: "Données isolées", text: "Politiques RLS et séparation stricte par entreprise." }, { icon: FileText, title: "Actions tracées", text: "Journal d'audit pour les opérations sensibles." }].map((item) => <article key={item.title} className="rounded-2xl bg-[#09223e] p-6 text-white"><item.icon className="size-6 text-[#72d9ce]" /><h3 className="mt-8 text-sm font-black">{item.title}</h3><p className="mt-3 text-[10px] leading-5 text-slate-300">{item.text}</p></article>)}
+          <div className="divide-y divide-[#09223e]/20 border-y border-[#09223e]/20">
+            <div className="py-5"><h3 className="text-lg font-bold">Accès par rôle</h3><p className="mt-2 text-sm leading-6">Profils internes définis ; droits à vérifier avec des comptes de test.</p></div>
+            <div className="py-5"><h3 className="text-lg font-bold">Documents privés</h3><p className="mt-2 text-sm leading-6">Téléchargements temporaires signés, tests d’isolation à réaliser.</p></div>
+            <div className="py-5"><h3 className="text-lg font-bold">Audit de production</h3><p className="mt-2 text-sm leading-6">Journalisation, antivirus et restaurations à renforcer avant commercialisation.</p></div>
           </div>
         </div>
       </section>
@@ -391,14 +369,19 @@ export default function LandingPage() {
       <section id="pour-qui" className="px-5 py-24 sm:px-8 sm:py-32">
         <div className="mx-auto max-w-[1180px]">
           <div className="mx-auto max-w-[700px] text-center"><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#0ca898]">Pensé pour le terrain</p><h2 className="mt-4 text-4xl font-black tracking-[-0.045em] sm:text-5xl">Une plateforme, plusieurs métiers.</h2></div>
-          <div className="mt-14 grid gap-4 md:grid-cols-3">
-            {audiences.map((audience) => <article key={audience.title} className="rounded-[22px] border border-[#d9d6cc] bg-white p-7"><audience.icon className="size-6 text-[#0ca898]" /><h3 className="mt-8 text-lg font-black">{audience.title}</h3><p className="mt-3 text-xs leading-6 text-[#697371]">{audience.text}</p></article>)}
+          <div className="mt-14 divide-y divide-[#d9d6cc] border-y border-[#d9d6cc]">
+            {audiences.map((audience) => (
+              <article key={audience.title} className="grid gap-3 py-7 md:grid-cols-[220px_1fr] md:gap-10">
+                <h3 className="text-xl font-bold">{audience.title}</h3>
+                <p className="max-w-2xl text-sm leading-7 text-[#465958]">{audience.text}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
       <section id="contact" className="px-5 pb-5 sm:px-8 sm:pb-8">
-        <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[28px] bg-[#0ca898] px-6 py-16 text-white sm:px-14 sm:py-20">
+        <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[28px] bg-[#087f75] px-6 py-16 text-white sm:px-14 sm:py-20">
           <div className="landing-grid absolute inset-0 opacity-10" />
           <div className="relative flex flex-col justify-between gap-10 lg:flex-row lg:items-end">
             <div><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#d0fff9]">Le prototype est en construction</p><h2 className="mt-4 max-w-[720px] text-4xl font-black leading-[1.02] tracking-[-0.05em] sm:text-6xl">Construisons une logistique plus visible au Sénégal.</h2></div>

@@ -163,7 +163,7 @@ function ProductPreview() {
           <span className="size-2 rounded-full bg-[#ff6b6b]" />
           <span className="size-2 rounded-full bg-[#e9c63f]" />
           <span className="size-2 rounded-full bg-[#0ca898]" />
-          <span className="ml-4 hidden rounded-md bg-slate-100 px-16 py-1 text-[7px] text-slate-400 sm:block">Aperçu d'interface (simulation)</span>
+          <span className="ml-4 hidden rounded-md bg-slate-100 px-16 py-1 text-[7px] text-slate-400 sm:block">Aperçu d’interface (simulation)</span>
         </div>
         <div className="grid min-h-[430px] md:grid-cols-[180px_1fr]">
           <aside className="hidden bg-[#09223e] p-4 text-white md:block">
@@ -291,7 +291,7 @@ export default function LandingPage() {
               <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#0ca898]">Le cœur de la plateforme</p>
               <h2 className="mt-4 max-w-[520px] text-4xl font-black leading-[1.02] tracking-[-0.045em] sm:text-5xl">Des opérations suivies dossier par dossier.</h2>
             </div>
-            <p className="max-w-[560px] text-sm leading-7 text-[#5c6867] lg:ml-auto">TransitFlow regroupe les clients, expéditions, documents et événements saisis par votre équipe. Les contrôles d'accès multi-entreprises doivent encore être validés en conditions réelles avant le pilote.</p>
+            <p className="max-w-[560px] text-sm leading-7 text-[#5c6867] lg:ml-auto">TransitFlow regroupe les clients, expéditions, documents et événements saisis par votre équipe. Les contrôles d’accès multi-entreprises doivent encore être validés en conditions réelles avant le pilote.</p>
           </div>
 
           <div className="mt-16 divide-y divide-[#d9d6cc] border-y border-[#d9d6cc]">
@@ -346,7 +346,7 @@ export default function LandingPage() {
             <div className="mt-8 space-y-4">
               {[{ icon: Radar, text: "Position, vitesse, cap et dernière actualisation" }, { icon: Clock3, text: "ETA, retards et changements d'itinéraire" }, { icon: Globe2, text: "Départ, transbordements et arrivée à Dakar" }].map((item) => <div key={item.text} className="flex items-center gap-3 text-xs font-bold"><span className="grid size-9 place-items-center rounded-lg bg-[#e2f5f2] text-[#087f75]"><item.icon className="size-4" /></span>{item.text}</div>)}
             </div>
-            <p className="mt-7 rounded-xl border border-[#e2c65e]/30 bg-[#fff9dd] p-4 text-[10px] leading-5 text-[#716126]">Toutes les positions, vitesses et dates présentées ici sont fictives. Aucune disponibilité d'une API AIS ou de suivi conteneur n'est garantie.</p>
+            <p className="mt-7 rounded-xl border border-[#e2c65e]/30 bg-[#fff9dd] p-4 text-[10px] leading-5 text-[#716126]">Toutes les positions, vitesses et dates présentées ici sont fictives. Aucune disponibilité d’une API AIS ou de suivi conteneur n’est garantie.</p>
           </div>
         </div>
       </section>
@@ -356,11 +356,11 @@ export default function LandingPage() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider">Sécurité et confidentialité</p>
             <h2 className="mt-6 text-4xl font-black leading-[1.02] tracking-[-0.05em] sm:text-5xl">Vos dossiers restent vos dossiers.</h2>
-            <p className="mt-5 text-sm leading-7 text-[#4e4a31]">L'application est conçue pour séparer les dossiers de chaque entreprise. La validation des règles RLS et du stockage sur une instance Supabase réelle reste obligatoire avant tout pilote.</p>
+            <p className="mt-5 text-sm leading-7 text-[#4e4a31]">L’application est conçue pour séparer les dossiers de chaque entreprise. La validation des règles RLS et du stockage sur une instance Supabase réelle reste obligatoire avant tout pilote.</p>
           </div>
           <div className="divide-y divide-[#09223e]/20 border-y border-[#09223e]/20">
             <div className="py-5"><h3 className="text-lg font-bold">Accès par rôle</h3><p className="mt-2 text-sm leading-6">Profils internes définis ; droits à vérifier avec des comptes de test.</p></div>
-            <div className="py-5"><h3 className="text-lg font-bold">Documents privés</h3><p className="mt-2 text-sm leading-6">Téléchargements temporaires signés, tests d'isolation à réaliser.</p></div>
+            <div className="py-5"><h3 className="text-lg font-bold">Documents privés</h3><p className="mt-2 text-sm leading-6">Téléchargements temporaires signés, tests d’isolation à réaliser.</p></div>
             <div className="py-5"><h3 className="text-lg font-bold">Audit de production</h3><p className="mt-2 text-sm leading-6">Journalisation, antivirus et restaurations à renforcer avant commercialisation.</p></div>
           </div>
         </div>

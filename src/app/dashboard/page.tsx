@@ -272,7 +272,7 @@ function MaritimeTraffic() {
           </div>
         </div>
         <div className="absolute left-[46%] top-[31%]">
-          <span className="absolute -inset-3 animate-pulse rounded-full bg-teal-500/15" />
+
           <div className="relative grid size-8 place-items-center rounded-full bg-[#0ca898] text-white shadow-lg shadow-teal-900/20">
             <Ship className="size-4 rotate-[-18deg]" />
           </div>
@@ -458,17 +458,12 @@ export default async function DashboardPage() {
                 </Link>
                 <Link href="/dashboard/clients" className="mb-2 ml-4 inline-flex text-sm font-semibold text-teal-700 hover:underline">Clients</Link>
                 <Link href="/dashboard/expeditions" className="mb-2 ml-4 inline-flex text-sm font-semibold text-teal-800 hover:underline">Expéditions</Link>
-                <div className="mb-1 flex items-center gap-2">
-                  <span className="rounded-md bg-teal-50 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-teal-700">
-                    Prototype MVP
-                  </span>
-                  <span className="text-[11px] text-slate-400">{today}</span>
-                </div>
                 <h1 className="text-2xl font-bold tracking-tight text-[#102a43] sm:text-[28px]">
                   Bonjour {displayName}, bienvenue
                 </h1>
-                <p className="mt-1 text-xs text-slate-500">
-                  Indicateurs et expéditions réels de votre entreprise. Le suivi maritime et les exemples d’alertes restent simulés.
+                <p className="mt-2 text-xs font-medium text-slate-600">Prototype MVP · {today}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-600">
+                  Indicateurs issus de votre entreprise. Le suivi maritime et les exemples d'alertes restent simulés.
                 </p>
               </div>
               {canWriteShipments(membership.role) && <Link href="/dashboard/expeditions/nouveau"

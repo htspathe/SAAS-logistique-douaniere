@@ -256,7 +256,7 @@ export default function LandingPage() {
               Gérez vos clients, vos expéditions et vos documents depuis un seul espace. Le suivi maritime automatisé et les notifications restent en développement.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/auth/inscription" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0ca898] px-5 text-xs font-extrabold text-white transition hover:bg-[#0db8a7]">
+              <Link href="/auth/inscription" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#087f75] px-5 text-xs font-extrabold text-white transition hover:bg-[#065e56]">
                 Créer mon compte <ArrowRight className="size-4" />
               </Link>
               <a href="#fonctionnalites" className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/5 px-5 text-xs font-bold text-white transition hover:bg-white/10">
@@ -381,7 +381,7 @@ export default function LandingPage() {
       </section>
 
       <section id="contact" className="px-5 pb-5 sm:px-8 sm:pb-8">
-        <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[28px] bg-[#0ca898] px-6 py-16 text-white sm:px-14 sm:py-20">
+        <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[28px] bg-[#087f75] px-6 py-16 text-white sm:px-14 sm:py-20">
           <div className="landing-grid absolute inset-0 opacity-10" />
           <div className="relative flex flex-col justify-between gap-10 lg:flex-row lg:items-end">
             <div><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#d0fff9]">Le prototype est en construction</p><h2 className="mt-4 max-w-[720px] text-4xl font-black leading-[1.02] tracking-[-0.05em] sm:text-6xl">Construisons une logistique plus visible au Sénégal.</h2></div>

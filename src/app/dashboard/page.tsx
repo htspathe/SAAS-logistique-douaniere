@@ -277,7 +277,7 @@ function MaritimeTraffic() {
             <Ship className="size-4 rotate-[-18deg]" />
           </div>
           <div className="absolute left-7 top-6 w-max rounded-md bg-[#102a43] px-2 py-1 text-[8px] font-semibold text-white shadow-lg">
-            Navire fictif · données d'exemple
+            Navire fictif · données d’exemple
           </div>
         </div>
         <div className="absolute left-[73%] top-[62%] grid size-6 place-items-center rounded-full bg-blue-600 text-white shadow-md">
@@ -463,7 +463,7 @@ export default async function DashboardPage() {
                 </h1>
                 <p className="mt-2 text-xs font-medium text-slate-600">Prototype MVP · {today}</p>
                 <p className="mt-2 text-xs leading-5 text-slate-600">
-                  Indicateurs issus de votre entreprise. Le suivi maritime et les exemples d'alertes restent simulés.
+                  Indicateurs issus de votre entreprise. Le suivi maritime et les exemples d’alertes restent simulés.
                 </p>
               </div>
               {canWriteShipments(membership.role) && <Link href="/dashboard/expeditions/nouveau"

@@ -17,7 +17,7 @@ test("the public landing and dashboard avoid banned generic visual effects", () 
 
 test("landing explains unfinished features instead of claiming they are live", () => {
   assert.match(landing, /notifications restent en développement/);
-  assert.match(landing, /Aucune disponibilité d'une API AIS/);
+  assert.match(landing, /Aucune disponibilité d’une API AIS/);
   assert.match(landing, /Toutes les positions, vitesses et dates présentées ici sont fictives/);
   assert.doesNotMatch(landing, /<Sparkles/);
   assert.doesNotMatch(landing, /lg:grid-cols-3|md:grid-cols-3/);

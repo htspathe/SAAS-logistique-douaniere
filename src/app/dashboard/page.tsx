@@ -16,7 +16,6 @@ import {
   LayoutDashboard,
   LogOut,
   MapPinned,
-  Menu,
   Plus,
   Settings,
   Ship,

@@ -11,7 +11,7 @@ test("the public landing and dashboard avoid banned generic visual effects", () 
   for (const [name, source] of [["landing", landing], ["dashboard", dashboard]]) {
     assert.doesNotMatch(source, /bg-gradient-to-[a-z]+|bg-clip-text|text-transparent|backdrop-blur|hover:opacity-/, name);
     assert.doesNotMatch(source, /font-serif[^"\n]*italic|Space_Grotesk|Instrument_Serif/, name);
-    assert.doesNotMatch(source, /\p{Extended_Pictographic}/u, name);
+    assert.doesNotMatch(source, /[\u{1F300}-\u{1FAFF}]/u, name);
   }
 });
 

@@ -48,6 +48,8 @@ npm run check
 - [Modèle métier](docs/DOMAIN_MODEL.md)
 - [Sécurité](docs/SECURITY.md)
 - [Direction artistique](docs/DESIGN.md)
+- [Recherche stratégique et sources publiques (10 novembre 2026)](docs/RECHERCHE_STRATEGIQUE_2026-11-10.md)
+- [Protocole de recherche terrain](docs/PROTOCOLE_TERRAIN.md)
 - [Modèle économique](docs/BUSINESS_MODEL.md)
 - [Feuille de route](docs/ROADMAP.md)
 - [Décision d'architecture](docs/adr/0001-architecture.md)

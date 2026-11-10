@@ -48,6 +48,7 @@ npm run check
 - [Modèle métier](docs/DOMAIN_MODEL.md)
 - [Sécurité](docs/SECURITY.md)
 - [Direction artistique](docs/DESIGN.md)
+- [Étude stratégique complète (26 sections, 10 novembre 2026)](docs/ETUDE_COMPLETE_2026-11-10.md)
 - [Recherche stratégique et sources publiques (10 novembre 2026)](docs/RECHERCHE_STRATEGIQUE_2026-11-10.md)
 - [Protocole de recherche terrain](docs/PROTOCOLE_TERRAIN.md)
 - [Modèle économique](docs/BUSINESS_MODEL.md)
